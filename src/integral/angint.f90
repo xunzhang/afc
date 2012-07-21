@@ -5,11 +5,10 @@
 ! 		
 !-------------------------------------------------------------------------
 
-      module angint
 
       subroutine lebsam(n, coords, wgts)
-
       use parameter_def
+      !use parameter_def
 
       implicit none
 
@@ -114,8 +113,8 @@
 
 
       program test_lebsam
-
          use parameter_def
+         !use parameter_def
       
          implicit none
          
@@ -137,4 +136,3 @@
          print *, "Test Finished!"
       end
 
-      end module angint

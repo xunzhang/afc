@@ -10,8 +10,6 @@
 !
 !------------------------------------------------------------------------------
  
-      module radint    
- 
       subroutine Sec_Gauss_Chebyshev(n, p, r, wgts)
 
       use parameter_def
@@ -119,4 +117,3 @@
          print *, "Sec_Gauss_CHebyshev int Test Finished!"
       end
 
-      end module radint
