@@ -108,7 +108,7 @@
       implicit none
       ! argument
       integer, intent(in) :: na, np
-      real(double), intent(in) :: acenter_coords(na, 3), coords(np, 3)
+      real(double), intent(in) :: acenter_coords(3, na), coords(3, np)
       real(double), intent(out) :: pwgts(na, np)
       ! local variables
       integer :: ia, ip, ja
@@ -122,7 +122,7 @@
             
                   mu = 0.0d0
                   sres = 0.0d0
-                  mu = correlation(coord(ip,), center1(ia,), center2(ja,))
+                  mu = correlation(coords(, ip), acenter_coords(, ia), acenter_coords(, ja))
                   sres = func_s(mu)
                   pwgts(ia, ip) = pwgts(ia, ip) * sres
             
