@@ -109,30 +109,3 @@
       deallocate(x, y, z)
       
       end subroutine lebsam 
-
-
-
-      program test_lebsam
-         use parameter_def
-         !use parameter_def
-      
-         implicit none
-         
-         integer :: i
-         integer :: num = 110
-         real(double) coords(3, 110), wgts(110)
-         
-         call lebsam(num, coords, wgts)
-         
-         do i = 1, num
-            write(*, *)
-            write(*, "(4f15.10)") coords(1, i)
-            write(*, "(4f15.10)") coords(2, i)
-            write(*, "(4f15.10)") coords(3, i)
-            write(*, "(4f15.10)") wgts(i)
-            write(*, *)
-         end do
-         
-         print *, "Test Finished!"
-      end
-
