@@ -11,9 +11,6 @@
 !
 !---------------------------------------------------------------------------
       
-      function integrand(pcoords, )
-      end function integrand
-      
       
       subroutine 3d_integral(na, ns, nr, int_res)
       
@@ -26,19 +23,27 @@
       real(double) :: int_rval(nr), int_sval(ns)
       real(double) :: rcoords(nr), rwgts(nr)
       real(double) :: scoords(3, ns), swgts(ns)
-      real(double) :: accords(na, 3)
+      real(double) :: accords(3, na)
       np = ns * nr
-      real(double) :: pcoords(np, 3), pwgts(np)
+      real(double) :: pcoords(3, np), pwgts(na, np)
+      real(double) :: sine
+      real(double) :: coord(3)
 
       call Sec_Gauss_Chebyshev(nr, 1, rcoords, rwgts) 
       
       call lebsam(ns, scoords, swgts) 
       
-      accords = 
-      
+      do ka = 1, na
+         accords(1, ka) = grid3d(ka)%x
+         accords(2, ka) = grid3d(ka)%y
+         accords(3, ka) = grid3d(ka)%z
+      end do
+
       do ir = 1, nr
          do is = 1, ns
-            pcoords(,) = rcoords(ir) * 
+            pcoords(1, (ir - 1) * ns + is) = rcoords(ir) * scoords(1, is) 
+            pcoords(2, (ir - 1) * ns + is) = rcoords(ir) * scoords(2, is) 
+            pcoords(3, (ir - 1) * ns + is) = rcoords(ir) * scoords(3, is) 
          end do
       end do
       
@@ -50,8 +55,17 @@
          do js = 1, ns
             int_rval(js) = 0.0d0
             do ir = 1, nr
+               sine = 0.0d0
+               coord(1) = 0.0d0
+               coord(2) = 0.0d0
+               coord(3) = 0.0d0
+               coord(1) = rcoords(ir) * scoords(1, is) 
+               coord(2) = rcoords(ir) * scoords(2, is)
+               coord(3) = rcoords(ir) * scoords(3, is)
+               sine = coord(3) / rcoords(ir)
+               sine = sqrt(1 - tmp ** 2)
                int_rval(js) = int_rval(js) + rwgts(ir) * &
-               ( pwgts(ka, ir * ns + is) * F(p(ir, is)) * sin(ssss) )
+               ( pwgts(ka, (ir - 1) * ns + is) * F(p(ir, is)) * sine
             end do
             int_sval(ka) = int_sval(ka) + swgts(js) * int_rval(js)
          end do
