@@ -22,7 +22,7 @@
 
       if(n.lt.1) then
          write(*, *)
-         write(*, '("Error: n < 1")')
+         write(*, '("Error in angint.f90: n < 1")')
          write(*, *)
          stop
       end if

@@ -29,7 +29,7 @@
 
       if(n.lt.1) then
          write(*, *)
-         write(*, '("Error: n < 1")')
+         write(*, '("Error in radint.f90: n < 1")')
          write(*, *)
          stop
       end if
@@ -66,4 +66,3 @@
          
       end do
       end subroutine Sec_Gauss_Chebyshev 
-

@@ -20,5 +20,5 @@
             write(*, *)
          end do
 
-         print *, "Test Finished!"
+         print *, "Test angint.f90 finished!"
       end

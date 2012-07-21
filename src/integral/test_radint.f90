@@ -60,5 +60,5 @@
             write(*, *) res
             write(*, *)
          end do
-         
+      print *, "Test radint.f90 finished!"   
       end
