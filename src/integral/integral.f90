@@ -65,7 +65,8 @@
                coord(3) = rcoords(ir) * scoords(3, is)
                sine = coord(3) / rcoords(ir)
                sine = sqrt(1 - tmp ** 2)
-               int_rval(js) = int_rval(js) + rwgts(ir) * ( pwgts(ka, (ir - 1) * ns + is) * F(p(ir, is)) * sine )
+               ! or F(p(coord))
+               int_rval(js) = int_rval(js) + rwgts(ir) * ( pwgts(ka, (ir - 1) * ns + is) * F(p(ir, is)) * sine ) 
             end do
             int_sval(ka) = int_sval(ka) + swgts(js) * int_rval(js)
          end do
