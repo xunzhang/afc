@@ -30,16 +30,24 @@
       end function dist
 
 
-      function correlation(coord, center1, center2) result(mu)
+      function correlation(ccoord, center1, center2) result(mu)
 
       use parameter_def
       !implicit none
 
       ! argument
-      real(double), intent(in) :: coord(3), center1(3), center2(3)
+      real(double), intent(in) :: ccoord(3), center1(3), center2(3)
       real(double) :: mu
-
-      mu = (dist(coord, center1) - dist(coord, center2)) / dist(center1, center2)
+      ! local variables
+      integer :: i
+      real(double) :: tmp_coord(3)
+      
+      ! transfer to absolute coordination 
+      do i = 1, 3
+         tmp_coord(i) = ccoord(i) + center1(i)
+      end do
+      
+      mu = (dist(tmp_coord, center1) - dist(tmp_coord, center2)) / dist(center1, center2)
 
       end function correlation
 
@@ -114,25 +122,22 @@
       ! local variables
       integer :: ia, ip, ja
       real(double) :: mu, sres
-
-      do ip = 1, np
-         do ia = 1, na
+      
+      do ia = 1, na
+         do ip = 1, np
             pwgts(ia, ip) = 1.0d0
             do ja = 1, na
                if(ia /= ja) then
-
                   mu = 0.0d0
                   sres = 0.0d0
                   mu = correlation(coords(:, ip), acenter_coords(:, ia), acenter_coords(:, ja))
                   sres = func_s(mu)
                   pwgts(ia, ip) = pwgts(ia, ip) * sres
-
                end if
             end do
          end do
       end do
-
+      
       call normalize(pwgts, na, np) 
 
       end subroutine cal_patition
-
