@@ -16,7 +16,7 @@
       implicit none
       ! argument
       integer, intent(in) :: n
-      integer, intent(in) :: p
+      real(double), intent(in) :: p
       real(double), intent(out) :: r(n), wgts(n)
       ! local variables
       integer :: ip
@@ -33,11 +33,13 @@
          write(*, *)
          stop
       end if
-      
+     
+      write(*, *) "ppppppppppppppppppppppppp is", p
+
       coff1 = 0.0d0
       coff2 = 0.0d0
       coff1 = pi / (n + 1)
-      coff2 = 2 * p ** 3 
+      coff2 = 2.0d0 * (p ** 3)
       coff2 = coff2 * coff1
 
       do ip = 1, n

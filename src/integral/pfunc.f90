@@ -127,17 +127,33 @@
          do ip = 1, np
             pwgts(ia, ip) = 1.0d0
             do ja = 1, na
-               if(ia /= ja) then
-                  mu = 0.0d0
-                  sres = 0.0d0
-                  mu = correlation(coords(:, ip), acenter_coords(:, ia), acenter_coords(:, ja))
-                  sres = func_s(mu)
-                  pwgts(ia, ip) = pwgts(ia, ip) * sres
-               end if
+            if(ia /= ja) then
+               mu = 0.0d0
+               sres = 0.0d0
+               mu = correlation(coords(:, ip), acenter_coords(:, ia), acenter_coords(:, ja))
+               sres = func_s(mu)
+               pwgts(ia, ip) = pwgts(ia, ip) * sres
+            end if
             end do
+            !write(*, *) pwgts(ia, ip)
          end do
       end do
       
+      !do ip = 1, np
+      !   do ia = 1, na
+      !      pwgts(ia, ip) = 1.0d0
+      !      do ja = 1, na
+      !         if(ia /= ja) then
+      !           mu = 0.0d0
+      !           sres = 0.0d0
+      !           mu = correlation(coords(:, ip), acenter_coords(:, ia), acenter_coords(:, ja))
+      !           sres = func_s(mu)
+      !           pwgts(ia, ip) = pwgts(ia, ip) * sres
+      !        end if
+      !     end do
+      !  end do
+      !end do
+
       call normalize(pwgts, na, np) 
 
       end subroutine cal_patition

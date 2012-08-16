@@ -11,21 +11,12 @@
 !
 !---------------------------------------------------------------------------
       
-      function exp_func(x) result(y)
-         use parameter_def
- 
-         ! argument
-         real(double), intent(in) :: x
-         real(double) :: y
-         y = exp(10 - x)
-
-      end function exp_func
      
       subroutine integral3d(na, ns, nr, int_res)
       
       use parameter_def
       use common_data
-      !implicit none
+      implicit none
 
       ! argument
       integer, intent(in) :: na, ns, nr
@@ -45,14 +36,12 @@
       real(double) :: tmp_coord(3)
       !real(double) :: charx(ns * nr)
       real(double) :: zn_atom
-      real(double) :: para
-
+      
       print *, "I am here"
       np = ns * nr
-      para = 0.6614040960026232
       
       ! generate points in radial direction, the nr rcoords is relative coordinates to atom
-      call Sec_Gauss_Chebyshev(nr, para, rcoords, rwgts) 
+      call Sec_Gauss_Chebyshev(nr, 1, rcoords, rwgts) 
       
       ! generate points in angular direction, the ns scoords is relative coordinates to atom
       call lebsam(ns, scoords, swgts) 
@@ -77,7 +66,7 @@
       call cal_patition(acoords, na, pcoords, np, pwgts)
       
       int_res = 0.0d0
-      do ka = 9, 9
+      do ka = 1, na
          int_sval(ka) = 0.0d0
          do js = 1, ns
             int_rval(js) = 0.0d0
@@ -92,27 +81,32 @@
                sine = tmp_coord(3) / rcoords(ir)
                sine = sqrt(1 - sine ** 2)
                
+               print *, "rad"
+               write(*, *) rcoords(ir)
                call interp(ka, tmp_coord, charx)
                ! or F(p(coord))
                ! int_rval(js) = int_rval(js) + rwgts(ir) * ( pwgts(ka, (ir - 1) * ns + is) * F(p(ir, is)) * sine ) 
-               ! int_rval(js) = int_rval(js) + rwgts(ir) * (pwgts(ka, (ir - 1) * ns + js) * charx * sine) 
-               int_rval(js) = int_rval(js) + rwgts(ir) * charx * sine
-               ! charx = exp_func(rcoords(ir))
-               ! int_rval(js) = int_rval(js) + rwgts(ir) * charx
-               write(*, *) "rcoords", rcoords(ir)
-               write(*, *) "rwgts(ir) is", rwgts(ir)
-               write(*, *) "swgts is", swgts(js)
-               write(*, *) "charx", charx
-               write(*, *)
+               int_rval(js) = int_rval(js) + rwgts(ir) * ( pwgts(ka, (ir - 1) * ns + js) * charx * sine) 
+               print *, "rwgts(ir) is"
+               write(*, *) rwgts(ir)
+               print *, "pwgts(ir) is"
+               write(*, *) pwgts(ka, (ir - 1) * ns + js)
+               print *, "sine"
+               write(*, *) sine
+               print *, "charx"
+               write(*, *) charx
             end do
+            print *, "swgts is"
+            write(*, *) swgts(js)
             int_sval(ka) = int_sval(ka) + swgts(js) * int_rval(js)  
-            write(*, *) "int result", int_sval(ka) * 4 * pi
          end do
          int_sval(ka) = int_sval(ka) * 4 * pi
+         print *, "atom result"
+         write(*, *) int_sval(ka)
          int_res = int_res + int_sval(ka)
       end do 
       
-      do ka = 1, 1
+      do ka = 1, na
          ib = basistag(ka)
          zn_atom = basis(ib) % zn
          print *, "zn print"

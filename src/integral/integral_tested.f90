@@ -54,6 +54,10 @@
       ! generate points in radial direction, the nr rcoords is relative coordinates to atom
       call Sec_Gauss_Chebyshev(nr, para, rcoords, rwgts) 
       
+      write(*, *) "00", nr
+      write(*, *) "aa", rcoords(1)
+      write(*, *) "bb", rwgts(1)
+
       ! generate points in angular direction, the ns scoords is relative coordinates to atom
       call lebsam(ns, scoords, swgts) 
      
@@ -77,7 +81,7 @@
       call cal_patition(acoords, na, pcoords, np, pwgts)
       
       int_res = 0.0d0
-      do ka = 9, 9
+      do ka = 1, 1
          int_sval(ka) = 0.0d0
          do js = 1, ns
             int_rval(js) = 0.0d0
@@ -92,13 +96,12 @@
                sine = tmp_coord(3) / rcoords(ir)
                sine = sqrt(1 - sine ** 2)
                
-               call interp(ka, tmp_coord, charx)
+               ! call interp(ka, tmp_coord, charx)
                ! or F(p(coord))
                ! int_rval(js) = int_rval(js) + rwgts(ir) * ( pwgts(ka, (ir - 1) * ns + is) * F(p(ir, is)) * sine ) 
-               ! int_rval(js) = int_rval(js) + rwgts(ir) * (pwgts(ka, (ir - 1) * ns + js) * charx * sine) 
-               int_rval(js) = int_rval(js) + rwgts(ir) * charx * sine
-               ! charx = exp_func(rcoords(ir))
-               ! int_rval(js) = int_rval(js) + rwgts(ir) * charx
+               ! int_rval(js) = int_rval(js) + rwgts(ir) * ( pwgts(ka, (ir - 1) * ns + js) * charx * sine) 
+               charx = exp_func(rcoords(ir))
+               int_rval(js) = int_rval(js) + rwgts(ir) * charx
                write(*, *) "rcoords", rcoords(ir)
                write(*, *) "rwgts(ir) is", rwgts(ir)
                write(*, *) "swgts is", swgts(js)
