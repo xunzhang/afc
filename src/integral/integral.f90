@@ -35,11 +35,11 @@
       integer :: ib, ja
       real(double) :: int_rval(ns), int_sval(na)
       ! real(double) :: int_rval(nr), int_sval(ns)
-      real(double) :: rcoords(nr), rwgts(nr)
+      real(double) :: rcoords(na, nr), rwgts(na, nr)
       real(double) :: scoords(3, ns), swgts(ns)
       real(double) :: acoords(3, na)
       !real(double) :: pcoords(3, ns * nr), pwgts(na, ns * nr)
-      real(double) :: pcoords(3, 17000), pwgts(18, 17000)
+      real(double) :: pcoords(na, 3, 17000), pwgts(18, 17000)
       real(double) :: sine
       real(double) :: charx
       real(double) :: tmp_coord(3)
@@ -49,11 +49,16 @@
 
       print *, "I am here"
       np = ns * nr
-      para = 0.6614040960026232
       
       ! generate points in radial direction, the nr rcoords is relative coordinates to atom
-      call Sec_Gauss_Chebyshev(nr, para, rcoords, rwgts) 
-      
+      do ka = 1, na
+         ib = basistag(ka)
+         zn_atom = basis(ib) % zn
+         !para = covr(zn_atom)
+         para = 0.6614040960026232
+         call Sec_Gauss_Chebyshev(nr, para, rcoords(ka, :), rwgts(ka, :)) 
+      end do
+
       ! generate points in angular direction, the ns scoords is relative coordinates to atom
       call lebsam(ns, scoords, swgts) 
      
@@ -66,18 +71,20 @@
       end do
       
       ! to each atom, still the relative coordinates, but combine radial and angular
-      do ir = 1, nr
-         do is = 1, ns
-            pcoords(1, (ir - 1) * ns + is) = rcoords(ir) * scoords(1, is) 
-            pcoords(2, (ir - 1) * ns + is) = rcoords(ir) * scoords(2, is) 
-            pcoords(3, (ir - 1) * ns + is) = rcoords(ir) * scoords(3, is) 
+      do ka = 1, na
+         do ir = 1, nr
+            do is = 1, ns
+               pcoords(ka, 1, (ir - 1) * ns + is) = rcoords(ka, ir) * scoords(1, is) 
+               pcoords(ka, 2, (ir - 1) * ns + is) = rcoords(ka, ir) * scoords(2, is) 
+               pcoords(ka, 3, (ir - 1) * ns + is) = rcoords(ka, ir) * scoords(3, is) 
+            end do
          end do
       end do
       
       call cal_patition(acoords, na, pcoords, np, pwgts)
       
       int_res = 0.0d0
-      do ka = 9, 9
+      do ka = 1, na
          int_sval(ka) = 0.0d0
          do js = 1, ns
             int_rval(js) = 0.0d0
@@ -86,21 +93,21 @@
                tmp_coord(1) = 0.0d0
                tmp_coord(2) = 0.0d0
                tmp_coord(3) = 0.0d0
-               tmp_coord(1) = rcoords(ir) * scoords(1, js) 
-               tmp_coord(2) = rcoords(ir) * scoords(2, js)
-               tmp_coord(3) = rcoords(ir) * scoords(3, js)
-               sine = tmp_coord(3) / rcoords(ir)
+               tmp_coord(1) = rcoords(ka, ir) * scoords(1, js) 
+               tmp_coord(2) = rcoords(ka, ir) * scoords(2, js)
+               tmp_coord(3) = rcoords(ka, ir) * scoords(3, js)
+               sine = tmp_coord(3) / rcoords(ka, ir)
                sine = sqrt(1 - sine ** 2)
                
                call interp(ka, tmp_coord, charx)
                ! or F(p(coord))
                ! int_rval(js) = int_rval(js) + rwgts(ir) * ( pwgts(ka, (ir - 1) * ns + is) * F(p(ir, is)) * sine ) 
-               ! int_rval(js) = int_rval(js) + rwgts(ir) * (pwgts(ka, (ir - 1) * ns + js) * charx * sine) 
-               int_rval(js) = int_rval(js) + rwgts(ir) * charx * sine
+               ! int_rval(js) = int_rval(js) + rwgts(ir) * charx * sine
                ! charx = exp_func(rcoords(ir))
                ! int_rval(js) = int_rval(js) + rwgts(ir) * charx
-               write(*, *) "rcoords", rcoords(ir)
-               write(*, *) "rwgts(ir) is", rwgts(ir)
+               int_rval(js) = int_rval(js) + rwgts(ka, ir) * (pwgts(ka, (ir - 1) * ns + js) * charx * sine) 
+               write(*, *) "rcoords", rcoords(ka, ir)
+               write(*, *) "rwgts(ir) is", rwgts(ka, ir)
                write(*, *) "swgts is", swgts(js)
                write(*, *) "charx", charx
                write(*, *)
