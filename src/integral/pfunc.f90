@@ -98,13 +98,6 @@
       integer :: i, j, k
       real(double) :: psum
       
-      do i = 1, np
-         psum(i) = 0.0d0
-         do j = 1, na
-            psum(i) = psum(i) + pwgts(j, )
-         end do
-      end do      
-
       do i = 1, na
          do j = 1, np
             pwgts(i, j) = pwgts(i, j) / psum
@@ -136,8 +129,18 @@
       ! local variables
       integer :: ia, iia, ip, ja, iter
       real(double) :: mu, sres, psum
-      real(double) :: pwgts_for_norm(na, na, np)
-     
+      !real(double) :: pwgts_for_norm(na, na, np)
+      real(double) :: pwgts_for_norm(18, 18, 17000)
+      real(double) :: coord_tmp(3)
+      
+      print *, "in pfunc.f90"
+      
+      do ia = 1, na
+         do ip = 1, np
+            pwgts(ia, ip) = 1.0d0
+         end do
+      end do
+
       do ia = 1, na ! for each atom
          do iia = 1, na ! for each 'the-other-atom' in the whole space
             do ip = 1, np ! for each int point
@@ -146,19 +149,15 @@
                if(ia /= ja) then
                   mu = 0.0d0
                   sres = 0.0d0
-                  
                   ! transfer to absolute coordination 
                   do iter = 1, 3
-                     coords(iia, iter, ip) = coords(iia, iter, ip) + acenter_coords(iter, iia)
+                     coord_tmp(iter) = coords(iia, iter, ip) + acenter_coords(iter, iia)
                   end do
-                  
-                  mu = correlation(coords(iia, :, ip), acenter_coords(:, ia), acenter_coords(:, ja))
+                  mu = correlation(coord_tmp, acenter_coords(:, ia), acenter_coords(:, ja))
                   sres = func_s(mu)
-                  
                   if(iia == ia) then
                      pwgts(ia, ip) = pwgts(ia, ip) * sres
                   end if
-                  
                   pwgts_for_norm(ia, iia, ip) = pwgts_for_norm(ia, iia, ip) * sres 
                end if
                end do
@@ -205,7 +204,13 @@
             do iia = 1, na
                psum = psum + pwgts_for_norm(ia, iia, ip)
             end do
-            pwgts(ia, ip) = pwgts(ia, ip) / psum
+            !write(*, *) "gere pwgts inline", pwgts(ia, ip)
+            !write(*, *) "gere psum", psum
+            !if(pwgts(ia, ip) /= 0.0d0) then
+            !   pwgts(ia, ip) = pwgts(ia, ip) / psum
+               !write(*, *) "gege result", pwgts(ia, ip)
+               !write(*, *)
+            !end if
          end do
       end do  
 

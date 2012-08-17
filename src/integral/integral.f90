@@ -58,9 +58,11 @@
          para = 0.6614040960026232
          call Sec_Gauss_Chebyshev(nr, para, rcoords(ka, :), rwgts(ka, :)) 
       end do
+      print *, "after sec_gauss_chebyshev"
 
       ! generate points in angular direction, the ns scoords is relative coordinates to atom
       call lebsam(ns, scoords, swgts) 
+      print *, "after lebsam"
      
       ! get the coordinates of na atoms, notice raw * rbuff
       do ka = 1, na
@@ -69,6 +71,8 @@
          acoords(2, ka) = coord(2, ja)
          acoords(3, ka) = coord(3, ja)
       end do
+      
+      print *, "I am here"
       
       ! to each atom, still the relative coordinates, but combine radial and angular
       do ka = 1, na
@@ -80,8 +84,10 @@
             end do
          end do
       end do
+      print *, "before patition"
       
       call cal_patition(acoords, na, pcoords, np, pwgts)
+      print *, "after patition"
       
       int_res = 0.0d0
       do ka = 1, na
@@ -106,14 +112,15 @@
                ! charx = exp_func(rcoords(ir))
                ! int_rval(js) = int_rval(js) + rwgts(ir) * charx
                int_rval(js) = int_rval(js) + rwgts(ka, ir) * (pwgts(ka, (ir - 1) * ns + js) * charx * sine) 
-               write(*, *) "rcoords", rcoords(ka, ir)
-               write(*, *) "rwgts(ir) is", rwgts(ka, ir)
-               write(*, *) "swgts is", swgts(js)
-               write(*, *) "charx", charx
-               write(*, *)
+               !write(*, *) "rcoords", rcoords(ka, ir)
+               !write(*, *) "rwgts(ir) is", rwgts(ka, ir)
+               !write(*, *) "sappwgts is", pwgts(ka, (ir - 1) * ns + js)
+               !write(*, *) "swgts is", swgts(js)
+               !write(*, *) "charx", charx
+               !write(*, *)
             end do
             int_sval(ka) = int_sval(ka) + swgts(js) * int_rval(js)  
-            write(*, *) "int result", int_sval(ka) * 4 * pi
+            !write(*, *) "int result", int_sval(ka) * 4 * pi
          end do
          int_sval(ka) = int_sval(ka) * 4 * pi
          int_res = int_res + int_sval(ka)
