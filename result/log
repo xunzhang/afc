@@ -1,0 +1,196 @@
+ prefix = pxylene_one              
+
+Job begin [CPU time (in second):        0.000        0.000]
+Job begin [System Date and Time:  18 Aug 2012     10:20:58]
+
+ --------------------------------- SCFC Info -----------------------------------
+ scfiter =    1 dis =   0.283E-03 ef(au) =   -0.38065 abs_cpu(sec) =        0.7
+ scfiter =    2 dis =   0.829E+00 ef(au) =   -0.38180 abs_cpu(sec) =        0.8
+ scfiter =    3 dis =   0.747E+00 ef(au) =    0.67880 abs_cpu(sec) =        1.0
+ scfiter =    4 dis =   0.482E+00 ef(au) =    0.68532 abs_cpu(sec) =        1.1
+ scfiter =    5 dis =   0.560E+01 ef(au) =    0.95771 abs_cpu(sec) =        1.2
+ scfiter =    6 dis =   0.219E+01 ef(au) =    0.88254 abs_cpu(sec) =        1.3
+ scfiter =    7 dis =   0.189E+01 ef(au) =    0.58066 abs_cpu(sec) =        1.4
+ scfiter =    8 dis =   0.181E+01 ef(au) =    0.54009 abs_cpu(sec) =        1.6
+ scfiter =    9 dis =   0.397E+00 ef(au) =   -0.34791 abs_cpu(sec) =        1.7
+ scfiter =   10 dis =   0.394E+00 ef(au) =   -0.33637 abs_cpu(sec) =        1.8
+ scfiter =   11 dis =   0.117E+00 ef(au) =   -0.29950 abs_cpu(sec) =        1.9
+ scfiter =   12 dis =   0.660E-01 ef(au) =   -0.29757 abs_cpu(sec) =        2.0
+ scfiter =   13 dis =   0.434E-01 ef(au) =   -0.29757 abs_cpu(sec) =        2.1
+ scfiter =   14 dis =   0.402E-01 ef(au) =   -0.29771 abs_cpu(sec) =        2.3
+ scfiter =   15 dis =   0.914E-02 ef(au) =   -0.29660 abs_cpu(sec) =        2.4
+ scfiter =   16 dis =   0.570E-02 ef(au) =   -0.29646 abs_cpu(sec) =        2.5
+ scfiter =   17 dis =   0.136E-02 ef(au) =   -0.29630 abs_cpu(sec) =        2.6
+ scfiter =   18 dis =   0.529E-03 ef(au) =   -0.29642 abs_cpu(sec) =        2.7
+ scfiter =   19 dis =   0.340E-03 ef(au) =   -0.29646 abs_cpu(sec) =        2.9
+ scfiter =   20 dis =   0.132E-03 ef(au) =   -0.29648 abs_cpu(sec) =        3.0
+ scfiter =   21 dis =   0.117E-03 ef(au) =   -0.29648 abs_cpu(sec) =        3.1
+ scfiter =   22 dis =   0.737E-04 ef(au) =   -0.29648 abs_cpu(sec) =        3.2
+ scfiter =   23 dis =   0.398E-04 ef(au) =   -0.29647 abs_cpu(sec) =        3.4
+ scfiter =   24 dis =   0.236E-04 ef(au) =   -0.29647 abs_cpu(sec) =        3.5
+ scfiter =   25 dis =   0.198E-04 ef(au) =   -0.29647 abs_cpu(sec) =        3.6
+ scfiter =   26 dis =   0.122E-04 ef(au) =   -0.29647 abs_cpu(sec) =        3.7
+ scfiter =  497 dis =   0.889E-05 ef(au) =   -0.29647 abs_cpu(sec) =        3.8
+  sumwpf    11601.0048597291            10800
+ scfiter =  498 dis =   0.321E-05 ef(au) =   -0.29647 abs_cpu(sec) =        4.1
+ ----------------------- total energy info ---------------------------------
+  one elect energy(val)                -22.533257
+  one elect energy(cor)               -159.143028
+  core shift energy                      0.330369
+  elect-elect energy                  -425.828702
+  nucle-elect energy                 -1387.492753
+  nucle-nucle energy                   340.964851
+  Vxc integeral                        -56.631538
+  Exc energy                           -43.098220
+  total energy(au, eV)                -307.679775            -8372.392323
+  binding energy(au, eV)                -3.480532              -94.710098
+ ---------------------------------------------------------------------------
+  sumwpf    11601.0048597291            10800
+ scfiter =  499 dis =   0.297E-05 ef(au) =   -0.29647 abs_cpu(sec) =        4.3
+ ----------------------- total energy info ---------------------------------
+  one elect energy(val)                -22.533260
+  one elect energy(cor)               -159.143028
+  core shift energy                      0.330368
+  elect-elect energy                  -425.828705
+  nucle-elect energy                 -1387.492750
+  nucle-nucle energy                   340.964851
+  Vxc integeral                        -56.631538
+  Exc energy                           -43.098220
+  total energy(au, eV)                -307.679775            -8372.392323
+  binding energy(au, eV)                -3.480532              -94.710098
+ ---------------------------------------------------------------------------
+  sumwpf    11601.0048597291            10800
+ scfiter =  500 dis =   0.150E-05 ef(au) =   -0.29647 abs_cpu(sec) =        4.5
+ ----------------------- total energy info ---------------------------------
+  one elect energy(val)                -22.533279
+  one elect energy(cor)               -159.143028
+  core shift energy                      0.330360
+  elect-elect energy                  -425.828731
+  nucle-elect energy                 -1387.492721
+  nucle-nucle energy                   340.964851
+  Vxc integeral                        -56.631536
+  Exc energy                           -43.098219
+  total energy(au, eV)                -307.679775            -8372.392324
+  binding energy(au, eV)                -3.480532              -94.710099
+ ---------------------------------------------------------------------------
+  -1.70633736843800        6.16555374507700       -1.01175549886200     
+  0.000000000000000E+000   5.44196618605100      -6.259414957000000E-003
+  0.000000000000000E+000   6.22973450541600        1.94706197954300     
+   1.70633736843800        6.16555374507700       -1.01175549886200     
+  0.000000000000000E+000   2.64347429767500       1.609385497500000E-002
+  0.000000000000000E+000   1.31587142131500       -2.26984733102200     
+  0.000000000000000E+000  -1.31587142131500       -2.26984733102200     
+  0.000000000000000E+000  -2.64347429767500       1.609385497500000E-002
+  0.000000000000000E+000  -1.31599068899700        2.30183593092700     
+  0.000000000000000E+000   1.31599068899700        2.30183593092700     
+  0.000000000000000E+000   2.35753167917700       -4.06675325215300     
+  0.000000000000000E+000  -2.35753167917700       -4.06675325215300     
+  0.000000000000000E+000  -2.35522131128100        4.10137923230000     
+  0.000000000000000E+000   2.35522131128100        4.10137923230000     
+  0.000000000000000E+000  -5.44196618605100      -6.259414957000000E-003
+   1.70633736843800       -6.16555374507700       -1.01175549886200     
+  -1.70633736843800       -6.16555374507700       -1.01175549886200     
+  0.000000000000000E+000  -6.22973450541600        1.94706197954300     
+ the intintint result before is
+ I am here
+ ppppppppppppppppppppppppp is  0.661404073238373     
+ ppppppppppppppppppppppppp is  0.661404073238373     
+ ppppppppppppppppppppppppp is  0.661404073238373     
+ ppppppppppppppppppppppppp is  0.661404073238373     
+ ppppppppppppppppppppppppp is  0.661404073238373     
+ ppppppppppppppppppppppppp is  0.661404073238373     
+ ppppppppppppppppppppppppp is  0.661404073238373     
+ ppppppppppppppppppppppppp is  0.661404073238373     
+ ppppppppppppppppppppppppp is  0.661404073238373     
+ ppppppppppppppppppppppppp is  0.661404073238373     
+ ppppppppppppppppppppppppp is  0.661404073238373     
+ ppppppppppppppppppppppppp is  0.661404073238373     
+ ppppppppppppppppppppppppp is  0.661404073238373     
+ ppppppppppppppppppppppppp is  0.661404073238373     
+ ppppppppppppppppppppppppp is  0.661404073238373     
+ ppppppppppppppppppppppppp is  0.661404073238373     
+ ppppppppppppppppppppppppp is  0.661404073238373     
+ ppppppppppppppppppppppppp is  0.661404073238373     
+ after sec_gauss_chebyshev
+ after lebsam
+ I am here
+ before patition
+ in pfunc.f90
+ after patition
+ add value   1.28142330156832     
+ nobody   1.28142330156832     
+ add value   9.07281241421897     
+ nobody   10.3542357157873     
+ add value   1.29654808263126     
+ nobody   11.6507837984186     
+ add value   1.30676058723795     
+ nobody   12.9575443856565     
+ add value   6.89691301087035     
+ nobody   19.8544573965269     
+ add value   5.45016015732784     
+ nobody   25.3046175538547     
+ add value   5.40684546183211     
+ nobody   30.7114630156868     
+ add value   6.92065582718558     
+ nobody   37.6321188428724     
+ add value   5.36634993945180     
+ nobody   42.9984687823242     
+ add value   5.34255468460188     
+ nobody   48.3410234669261     
+ add value  0.714083843243887     
+ nobody   49.0551073101700     
+ add value  0.743075987534604     
+ nobody   49.7981832977046     
+ add value  0.712853950058997     
+ nobody   50.5110372477636     
+ add value  0.736227733878580     
+ nobody   51.2472649816421     
+ add value   9.07677112441636     
+ nobody   60.3240361060585     
+ add value   1.27796699722184     
+ nobody   61.6020031032803     
+ add value   1.28503267272770     
+ nobody   62.8870357760080     
+ add value   1.31692588913145     
+ nobody   64.2039616651395     
+ zn print
+   1.00000000000000     
+ zn print
+   6.00000000000000     
+ zn print
+   1.00000000000000     
+ zn print
+   1.00000000000000     
+ zn print
+   6.00000000000000     
+ zn print
+   6.00000000000000     
+ zn print
+   6.00000000000000     
+ zn print
+   6.00000000000000     
+ zn print
+   6.00000000000000     
+ zn print
+   6.00000000000000     
+ zn print
+   1.00000000000000     
+ zn print
+   1.00000000000000     
+ zn print
+   1.00000000000000     
+ zn print
+   1.00000000000000     
+ zn print
+   6.00000000000000     
+ zn print
+   1.00000000000000     
+ zn print
+   1.00000000000000     
+ zn print
+   1.00000000000000     
+ the intintint result is
+   64.2039616651395     
+
+Job end [CPU time (in second):       12.586        8.057]
+Job end [System Date and Time:  18 Aug 2012     10:21:11]

@@ -39,7 +39,7 @@
       real(double) :: scoords(3, ns), swgts(ns)
       real(double) :: acoords(3, na)
       !real(double) :: pcoords(3, ns * nr), pwgts(na, ns * nr)
-      real(double) :: pcoords(na, 3, 17000), pwgts(18, 17000)
+      real(double) :: pcoords(na, 3, 24160), pwgts(18, 24160)
       real(double) :: sine
       real(double) :: charx
       real(double) :: tmp_coord(3)
@@ -49,7 +49,6 @@
 
       print *, "I am here"
       np = ns * nr
-      
       ! generate points in radial direction, the nr rcoords is relative coordinates to atom
       do ka = 1, na
          ib = basistag(ka)
@@ -111,7 +110,8 @@
                ! int_rval(js) = int_rval(js) + rwgts(ir) * charx * sine
                ! charx = exp_func(rcoords(ir))
                ! int_rval(js) = int_rval(js) + rwgts(ir) * charx
-               int_rval(js) = int_rval(js) + rwgts(ka, ir) * (pwgts(ka, (ir - 1) * ns + js) * charx * sine) 
+               ! int_rval(js) = int_rval(js) + rwgts(ka, ir) * (pwgts(ka, (ir - 1) * ns + js) * charx * sine) 
+               int_rval(js) = int_rval(js) + rwgts(ka, ir) * charx * sine
                !write(*, *) "rcoords", rcoords(ka, ir)
                !write(*, *) "rwgts(ir) is", rwgts(ka, ir)
                !write(*, *) "sappwgts is", pwgts(ka, (ir - 1) * ns + js)
@@ -120,13 +120,14 @@
                !write(*, *)
             end do
             int_sval(ka) = int_sval(ka) + swgts(js) * int_rval(js)  
-            !write(*, *) "int result", int_sval(ka) * 4 * pi
          end do
          int_sval(ka) = int_sval(ka) * 4 * pi
          int_res = int_res + int_sval(ka)
+         write(*, *) "add value", int_sval(ka)
+         write(*, *) "nobody", int_res
       end do 
       
-      do ka = 1, 1
+      do ka = 1, na
          ib = basistag(ka)
          zn_atom = basis(ib) % zn
          print *, "zn print"

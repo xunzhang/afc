@@ -130,7 +130,7 @@
       integer :: ia, iia, ip, ja, iter
       real(double) :: mu, sres, psum
       !real(double) :: pwgts_for_norm(na, na, np)
-      real(double) :: pwgts_for_norm(18, 18, 17000)
+      real(double) :: pwgts_for_norm(18, 18, 24160)
       real(double) :: coord_tmp(3)
       
       print *, "in pfunc.f90"
@@ -158,6 +158,7 @@
                   if(iia == ia) then
                      pwgts(ia, ip) = pwgts(ia, ip) * sres
                   end if
+                  !第ia个原子在第iia个原子的ip点位置的权重 
                   pwgts_for_norm(ia, iia, ip) = pwgts_for_norm(ia, iia, ip) * sres 
                end if
                end do
@@ -202,15 +203,15 @@
          do ip = 1, np
             psum = 0.0d0
             do iia = 1, na
-               psum = psum + pwgts_for_norm(ia, iia, ip)
+               psum = psum + pwgts_for_norm(iia, ia, ip)
             end do
             !write(*, *) "gere pwgts inline", pwgts(ia, ip)
             !write(*, *) "gere psum", psum
-            !if(pwgts(ia, ip) /= 0.0d0) then
-            !   pwgts(ia, ip) = pwgts(ia, ip) / psum
+            if(pwgts(ia, ip) /= 0.0d0) then
+               pwgts(ia, ip) = pwgts(ia, ip) / psum
                !write(*, *) "gege result", pwgts(ia, ip)
                !write(*, *)
-            !end if
+            end if
          end do
       end do  
 
