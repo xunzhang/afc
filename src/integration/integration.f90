@@ -2,6 +2,7 @@
       function interp(x, y, z) result(val)
          
          use parameter_def
+         use common_data
          implicit none
          ! arguments
          real(double), intent(in) :: x, y, z
@@ -92,66 +93,21 @@
       end function dist3d
  
 
-      function correlation(ccoord, center1, center2) result(mu)
- 
-         use parameter_def
-         ! argument
-         real(double), intent(in) :: ccoord(3), center1(3), center2(3)
-         real(double) :: mu
-         ! local variables
-         integer :: i
-
-         mu = (dist3d(ccoord, center1) - dist3d(ccoord, center2)) / dist3d(center1, center2)
- 
-      end function correlation
-
-
-      function func_p(mu) result(p)
- 
-         use parameter_def
-         ! argument
-         real(double), intent(in) :: mu
-         real(double) :: p
-  
-         p = 1.5 * mu - 0.5 * mu ** 3;
-  
-      end function func_p
-  
-  
-      function func_s(mu) result(s)
-  
-         use parameter_def
-         ! argument
-         real(double), intent(in) :: mu
-         real(double) :: s
-         ! local variables
-         real(double) :: tmp
-  
-         tmp = 0.0d0
-         tmp = func_p(mu)
-         tmp = func_p(tmp)
-         tmp = func_p(tmp)
-         s = 0.5 * (1 - tmp)
-  
-      end function func_s
-
-       
       ! coord and charx is global visible
-      subroutine integral(ncenter, nsphpt, nradpt, int_value)
+      subroutine integral3d(ncenter, nsphpt, nradpt, int_value)
       
       use parameter_def
       use common_data
-      
       ! argument 
       integer, intent(in) :: ncenter, nsphpt, nradpt
       real(double), intent(out) :: int_value
       ! local vars
       integer :: iatom, i, j, k
-      real(double) :: parm, radr, rwgt, miu, pwgt, single_int_value, sample_coord(3), r0
+      real(double) :: parm, radr, rwgt, miu, pwgt, single_int_value, sample_coord(3), r0, ra, rb, rab, tmp
       type(intpt), allocatable :: sample_point(:)
       real(double), allocatable :: scoords(:, :), swgts(:), sval(:, :), pdt_pwgt(:), func_val(:) 
       
-      allocate(sample_point(nradpt * nsphpt), coords(3, nsphpt), swgts(nsphpt), sval(ncenter, ncenter), pdt_pwgt(ncenter), func_val(nradpt * nsphpt))
+      allocate(sample_point(nradpt * nsphpt), scoords(3, nsphpt), swgts(nsphpt), sval(ncenter, ncenter), pdt_pwgt(ncenter), func_val(nradpt * nsphpt))
       
       parm = 1.0d0
       
@@ -161,55 +117,67 @@
       do iatom = 1, ncenter
          ! call lebsam(nsphpt, scoords, swgts)
          do i = 1, nradpt
-            call Sec_Gaussian_Chebyshev(i, nradpt, parm, radr, rwgt)
+            !call Sec_Gaussian_Chebyshev(i, nradpt, parm, radr, rwgt)
+            call LOG_MK1996(i, nradpt, parm, radr, rwgt)
             sample_point( (i - 1) * nsphpt + 1 : i * nsphpt) % x = radr * scoords(1, :)
             sample_point( (i - 1) * nsphpt + 1 : i * nsphpt) % y = radr * scoords(2, :)
             sample_point( (i - 1) * nsphpt + 1 : i * nsphpt) % z = radr * scoords(3, :)
             sample_point( (i - 1) * nsphpt + 1 : i * nsphpt) % wgt = 4 * pi * rwgt * swgts
          end do
-        
+         
+         !do i = 1, nradpt * nsphpt
+         !   write(*, *) "dim1 is: ", (sample_point(i) % x)
+         !   write(*, *) "dim2 is: ", (sample_point(i) % y)
+         !   write(*, *) "dim3 is: ", (sample_point(i) % z)
+         !end do
+
          ! transfer to absolute coords
          sample_point % x = sample_point % x + coord(1, iatom)
          sample_point % y = sample_point % y + coord(2, iatom)
          sample_point % z = sample_point % z + coord(3, iatom)
- 
-         ! do interp to get charx in sampled position
+         !write(*, *) "coord dim1 is ", coord(1, iatom)
+         !write(*, *) "coord dim2 is: ", coord(2, iatom)
+         !write(*, *) "coord dim3 is: ", coord(3, iatom)
          
+         ! do interp to get charx in sampled position
          do i = 1, nradpt * nsphpt
             func_val(i) = interp(sample_point(i) % x, sample_point(i) % y, sample_point(i) % z)
+            !write(*, *) "func_val is: ", func_val(i)
          end do 
          
          single_int_value = 0.0d0 
          ! single atom integration, traverse every sampling points
          do i = 1, nradpt * nsphpt
-            
             sval = 1.0d0
             sample_coord(1) = sample_point(i) % x
             sample_coord(2) = sample_point(i) % y
             sample_coord(3) = sample_point(i) % z
             do j = 1, ncenter ! for every sampling point:i of atom:iatom, cal its pwgt relative to j
+               ra = dsqrt( (sample_coord(1)-coord(1, j))**2 + (sample_coord(2)-coord(2,j))**2 + (sample_coord(3)-coord(3,j))**2 )
                do k = 1, ncenter ! to cal its pwgt relative to j, traverse k which is not equal to j
                   if(k == j) cycle
-                  miu = 0.0d0
-                  miu = correlation(sample_coord, coord(:, j), coord(:, k))
-                  sval(j, k) = func_s(miu)
+                  rb = dsqrt( (sample_coord(1)-coord(1, k))**2 + (sample_coord(2)-coord(2,k))**2 + (sample_coord(3)-coord(3,k))**2 )
+                  rab = dsqrt( (coord(1, j)-coord(1, k))**2 + (coord(2, j)-coord(2,k))**2 + (coord(3, j)-coord(3,k))**2 )
+                  miu = (ra - rb) / rab
+                  tmp = 1.5d0 * (miu) - 0.5d0 * miu **3
+                  tmp = 1.5d0 * (tmp) - 0.5d0 * tmp **3
+                  tmp = 1.5d0 * (tmp) - 0.5d0 * tmp **3
+                  sval(j, k) = 0.5d0 * (1 - tmp)
                end do
             end do 
-            
             ! accumulate pweight 
             pdt_pwgt = 1.0d0
             do k = 1, ncenter 
                pdt_pwgt = pdt_pwgt * sval(:, k)
             end do
-            
             ! Normalization pweight
-            pwgt = pdt_pwgt(iatom) / sum(pdt_pwgt)
+            if(sum(pdt_pwgt) /= 0) then
+               pwgt = pdt_pwgt(iatom) / sum(pdt_pwgt)
+            end if
             single_int_value = single_int_value + pwgt * sample_point(i) % wgt * func_val(i)
          end do 
-
          int_value = int_value + single_int_value
          write(*, *) "single integration is: ", single_int_value
       end do
-
-      write(*, *) :"integration is: ", int_value
-      end subroutine integral
+      write(*, *) "integration is: ", int_value
+      end subroutine integral3d
